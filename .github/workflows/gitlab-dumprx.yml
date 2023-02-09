@@ -1,0 +1,98 @@
+name: Android DumperX
+
+on:
+  workflow_dispatch:
+    inputs:
+      FIRMWARE_URL:
+        description: 'Android URL'
+        required: true
+        default: 'https://www.mediafire.com/file/qlwhcq76cyt1krw/LE8-H771B-R-GL-220902V1114%2528MobiFirmware.com%2529.zip/file'
+      DUMP_BRANCH:
+        description: 'Dump Branch'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - Android-S
+        - Android-R
+        - Android-Q
+        - Android-P
+        - Android-O
+        - Android-N
+      VENDOR_NAME:
+        description: 'Vendor Name'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - xiaomi
+        - samsung
+        - realme
+        - oppo
+        - lenovo
+        - motorola
+        - asus
+        - itel
+        - tecno
+        - infinix
+        - unknown
+      FIRMWARE_NAME:
+        description: 'Firmware Name'
+        required: true
+        default: 'LE8-H771B-R-GL-220902V1114'
+      TARGET_REPO:
+        description: 'Desired Repo name. NO HTTPS:// and WWW.'
+        required: true
+        default: 'gitlab.com/firmware-dump/android_dump_tecno_le8'
+
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Display Run Parameters
+      run: |
+        echo "::group::User Environment Variables"
+        echo "FIRMWARE_URL: ${{ github.event.inputs.FIRMWARE_URL }}"
+        echo "DUMP_BRANCH: ${{ github.event.inputs.DUMP_BRANCH }}"
+        echo "VENDOR_NAME: ${{ github.event.inputs.VENDOR_NAME }}"
+        echo "FIRMWARE_NAME: ${{ github.event.inputs.FIRMWARE_NAME }}"
+        echo "TARGET_REPO: ${{ github.event.inputs.TARGET_REPO }}"
+        echo "::endgroup::"
+ 
+    - name: Check Out
+      uses: actions/checkout@v3.1.0
+
+    - name: Prepare the environment
+      run: |
+        sudo apt install unace unrar zip unzip p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract rename
+        sudo apt install liblzma-dev python3-pip brotli lz4
+        pip install backports.lzma protobuf pycrypto twrpdtgen extract-dtb pycryptodome
+
+    - name: Clone Extractor
+      run: |
+        mkdir workspace
+        cd workspace
+        git clone https://github.com/DumprX/DumprX.git
+        cd DumprX
+        sudo bash setup.sh
+          
+    - name: Run
+      run: |
+        cd workspace && cd DumprX
+        ./dumper.sh ${{ github.event.inputs.FIRMWARE_URL }}
+
+    - name: Pushing to as Repository
+      run: |
+        cd workspace && cd DumprX/out
+        rm -rf .git
+        git init
+        git config http.postBuffer 524288000
+        git config --global user.name "Carlo Dee"
+        git config --global user.email "carlodee.official@gmail.com"
+        git branch -M ${{ github.event.inputs.DUMP_BRANCH }}
+        git add .
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.VENDOR_NAME }} ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@${{ github.event.inputs.TARGET_REPO }}.git
+        git push origin ${{ github.event.inputs.DUMP_BRANCH }}
+        echo "Done pushing as a repository. You now have Full Android Dump."
