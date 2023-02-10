@@ -4,21 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       FIRMWARE_URL:
-        description: 'Android URL'
+        description: 'Firmware URL'
         required: true
         default: 'https://www.mediafire.com/file/qlwhcq76cyt1krw/LE8-H771B-R-GL-220902V1114%2528MobiFirmware.com%2529.zip/file'
-      DUMP_BRANCH:
-        description: 'Dump Branch'
+      DEVICE_NAME:
+        description: 'Device Codename'
         required: true
-        default: ''
-        type: choice
-        options:
-        - Android-S
-        - Android-R
-        - Android-Q
-        - Android-P
-        - Android-O
-        - Android-N
+        default: 'TECNO-LE8'
       VENDOR_NAME:
         description: 'Vendor Name'
         required: true
@@ -40,10 +32,6 @@ on:
         description: 'Firmware Name'
         required: true
         default: 'LE8-H771B-R-GL-220902V1114'
-      TARGET_REPO:
-        description: 'Desired Repo name. NO HTTPS:// and WWW.'
-        required: true
-        default: 'gitlab.com/firmware-dump/android_dump_tecno_le8'
 
 jobs:
   build:
@@ -54,10 +42,10 @@ jobs:
       run: |
         echo "::group::User Environment Variables"
         echo "FIRMWARE_URL: ${{ github.event.inputs.FIRMWARE_URL }}"
-        echo "DUMP_BRANCH: ${{ github.event.inputs.DUMP_BRANCH }}"
+        echo "DEVICE_NAME: ${{ github.event.inputs.DEVICE_NAME }}"
         echo "VENDOR_NAME: ${{ github.event.inputs.VENDOR_NAME }}"
         echo "FIRMWARE_NAME: ${{ github.event.inputs.FIRMWARE_NAME }}"
-        echo "TARGET_REPO: ${{ github.event.inputs.TARGET_REPO }}"
+        echo "TARGET REPOSITORY: https://gitlab.com/firmware-dump/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git"
         echo "::endgroup::"
  
     - name: Check Out
@@ -90,9 +78,9 @@ jobs:
         git config http.postBuffer 524288000
         git config --global user.name "Carlo Dee"
         git config --global user.email "carlodee.official@gmail.com"
-        git branch -M ${{ github.event.inputs.DUMP_BRANCH }}
+        git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
         git add .
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.VENDOR_NAME }} ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@${{ github.event.inputs.TARGET_REPO }}.git
-        git push origin ${{ github.event.inputs.DUMP_BRANCH }}
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/firmware-dump/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
+        git push origin ${{ github.event.inputs.FIRMWARE_NAME }}
         echo "Done pushing as a repository. You now have Full Android Dump."
