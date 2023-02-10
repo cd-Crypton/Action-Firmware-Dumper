@@ -4,15 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       FIRMWARE_URL:
-        description: 'Firmware URL'
+        description: 'Firmware URL (Stock Firmware's download link.)'
         required: true
         default: 'https://www.mediafire.com/file/qlwhcq76cyt1krw/LE8-H771B-R-GL-220902V1114%2528MobiFirmware.com%2529.zip/file'
       DEVICE_NAME:
-        description: 'Device Codename'
+        description: 'Device Codename (Codename, not the shipped device name.)'
         required: true
         default: 'TECNO-LE8'
       VENDOR_NAME:
-        description: 'Vendor Name'
+        description: 'Vendor Name (Manufacturer or brands.)'
         required: true
         default: ''
         type: choice
@@ -29,9 +29,9 @@ on:
         - infinix
         - unknown
       FIRMWARE_NAME:
-        description: 'Firmware Name'
+        description: 'Firmware Name (Exact firmware name, the better.)'
         required: true
-        default: 'LE8-H771B-R-GL-220902V1114'
+        default: 'TECNO-LE8-H771B-R-GL-220902V1114'
 
 jobs:
   build:
