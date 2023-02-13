@@ -69,6 +69,7 @@ jobs:
       run: |
         cd workspace && cd DumprX
         ./dumper.sh ${{ github.event.inputs.FIRMWARE_URL }}
+      continue-on-error: true
 
     - name: Pushing to as Repository
       run: |
