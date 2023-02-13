@@ -61,7 +61,7 @@ jobs:
       run: |
         mkdir workspace
         cd workspace
-        git clone https://github.com/DumprX/DumprX.git
+        git clone https://github.com/cd-Crypton/DumprX.git
         cd DumprX
         sudo bash setup.sh
           
