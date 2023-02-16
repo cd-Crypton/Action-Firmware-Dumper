@@ -74,7 +74,7 @@ jobs:
     - name: Run
       run: |
         cd workspace && cd dumpyara
-        ./dumpyara.sh ${GITHUB_WORKSPACE}/workspace/Samfw.com_SM-T380_SER_T380DXS4CUD3_fac.zip
+        ./dumpyara.sh ${GITHUB_WORKSPACE}/workspace/dumpyara/input/Samfw.com_SM-T380_SER_T380DXS4CUD3_fac.zip
       continue-on-error: true
 
     - name: Pushing to as Repository
