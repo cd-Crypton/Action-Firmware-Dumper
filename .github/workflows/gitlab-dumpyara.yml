@@ -6,11 +6,11 @@ on:
       FIRMWARE_URL:
         description: 'Firmware URL (Stock Firmware download link.)'
         required: true
-        default: 'https://www.mediafire.com/file/qlwhcq76cyt1krw/LE8-H771B-R-GL-220902V1114%2528MobiFirmware.com%2529.zip/file'
+        default: 'https://06-samsung.cloud/v2/IxJCDiMnLjMJFyELAyxBIzQnNAYzNh4lFzssIDs2ByAzMUEgOzEUQDMQMCMBOyw/FxcwGjMWLywhFi81MyQiOQ8IHwUuLyE5DSUhIzQWKQASOCwdLgs0FB4WMwQ7AzQGLywzFw0LFUA8CwcxCRchEDQ7KQczQCkEDTA+OwNAKQY0Cy8tNAchJy84BkIjCyI/Iws8MQEWCDAeCw0xCREHOTQbIyshAD4OIQAGLC44Hiw0ER4OMiUzLDIlDSs8AD4fJhsGOg8HCkA8AywnCRc+Di8LBxAzBy4RDxYpKTwkHjUeBylCJgceKTIXIUAJER4OMi8+AwMSMDsjJBU5ODAeBzssPjsjJBU5MwcpAx4IHi8zFh4mIREHCwklAgI0GwZCDwcpCC47AgINMDMXHgcvEQMXBT8SLwoADSweOh42ITEPESwEFyweOjwXOwYmGzkGHgs0AB4DIzABFjQG'
       DEVICE_NAME:
         description: 'Device Codename (Codename, not the shipped device name.)'
         required: true
-        default: 'TECNO-LE8'
+        default: 'gta2swifi'
       VENDOR_NAME:
         description: 'Vendor Name (Manufacturer or brands.)'
         required: true
@@ -31,7 +31,7 @@ on:
       FIRMWARE_NAME:
         description: 'Firmware Name (Exact firmware name, the better.)'
         required: true
-        default: 'TECNO-LE8-H771B-R-GL-220902V1114'
+        default: 'Samfw.com_SM-T380_SER_T380DXS4CUD3_fac'
 
 jobs:
   build:
@@ -74,12 +74,12 @@ jobs:
     - name: Run
       run: |
         cd workspace && cd dumpyara
-        ./dumpyara.sh ${GITHUB_WORKSPACE}/workspace/dumpyara/input/Samfw.com_SM-T380_SER_T380DXS4CUD3_fac.zip
+        ./dumpyara.sh ${GITHUB_WORKSPACE}/workspace/dumpyara/input/${{ github.event.inputs.FIRMWARE_NAME }.zip
       continue-on-error: true
 
     - name: Pushing to as Repository
       run: |
-        cd workspace && cd dumpyara/out
+        cd workspace && cd dumpyara/working/${{ github.event.inputs.FIRMWARE_NAME }
         rm -rf .git
         git init
         git config http.postBuffer 524288000
