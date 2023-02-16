@@ -74,12 +74,12 @@ jobs:
     - name: Run
       run: |
         cd workspace && cd dumpyara
-        ./dumpyara.sh ${GITHUB_WORKSPACE}/workspace/dumpyara/input/${{ github.event.inputs.FIRMWARE_NAME }.zip
+        ./dumpyara.sh ${GITHUB_WORKSPACE}/workspace/dumpyara/input/${{ github.event.inputs.FIRMWARE_NAME }}.zip
       continue-on-error: true
 
     - name: Pushing to as Repository
       run: |
-        cd workspace && cd dumpyara/working/${{ github.event.inputs.FIRMWARE_NAME }
+        cd workspace && cd dumpyara/working/${{ github.event.inputs.FIRMWARE_NAME }}
         rm -rf .git
         git init
         git config http.postBuffer 524288000
