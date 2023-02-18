@@ -1,4 +1,4 @@
-name: Android DumperX
+name: Android DumprX
 
 on:
   workflow_dispatch:
