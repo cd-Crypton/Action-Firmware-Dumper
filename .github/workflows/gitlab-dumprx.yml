@@ -32,6 +32,10 @@ on:
         description: 'Firmware Name (Exact firmware name, the better.)'
         required: true
         default: 'TECNO-LE8-H771B-R-GL-220902V1114'
+      GITLAB_USERNAME:
+        description: 'It could be just your gitlab username or group name that your own.'
+        required: true
+        default: 'firmware-dump'
 
 jobs:
   build:
@@ -45,7 +49,8 @@ jobs:
         echo "DEVICE_NAME: ${{ github.event.inputs.DEVICE_NAME }}"
         echo "VENDOR_NAME: ${{ github.event.inputs.VENDOR_NAME }}"
         echo "FIRMWARE_NAME: ${{ github.event.inputs.FIRMWARE_NAME }}"
-        echo "TARGET REPOSITORY: https://gitlab.com/firmware-dump/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git"
+        echo "FIRMWARE_NAME: ${{ github.event.inputs.GITLAB_USERNAME }}"
+        echo "TARGET REPOSITORY: https://gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git"
         echo "::endgroup::"
  
     - name: Check Out
@@ -82,6 +87,6 @@ jobs:
         git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
         git add .
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/firmware-dump/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
+        git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         echo "Done pushing as a repository. You now have Full Android Dump."
