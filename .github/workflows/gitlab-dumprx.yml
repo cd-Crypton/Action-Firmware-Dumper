@@ -81,6 +81,7 @@ jobs:
         rm -rf .git
         git init
         git config http.postBuffer 524288000
+        git config --global http.version HTTP/1.1
         git config --global user.name "Carlo Dee"
         git config --global user.email "carlodee.official@gmail.com"
         git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
