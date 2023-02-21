@@ -56,6 +56,9 @@ jobs:
     - name: Check Out
       uses: actions/checkout@v3.1.0
 
+    - name: Cleanup
+      uses: rokibhasansagar/slimhub_actions@main
+
     - name: Prepare the environment
       run: |
         sudo apt install unace unrar zip unzip p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract rename
