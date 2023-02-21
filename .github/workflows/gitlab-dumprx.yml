@@ -61,6 +61,8 @@ jobs:
 
     - name: Prepare the environment
       run: |
+        sudo apt update
+        sudo apt -y upgrade
         sudo apt-get -y install unace unrar zip unzip p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract rename
         sudo apt-get -y install liblzma-dev python3-pip brotli lz4
         pip install backports.lzma protobuf pycrypto twrpdtgen extract-dtb pycryptodome
