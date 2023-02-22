@@ -85,7 +85,9 @@ jobs:
         cd workspace && cd DumprX/out
         rm -rf .git
         git init
-        git config http.postBuffer 524288000
+        git config http.postBuffer 2097152000
+        git config https.postBuffer 2097152000
+        git config --global http.version HTTP/1.1
         git config --global user.name "Carlo Dee"
         git config --global user.email "carlodee.official@gmail.com"
         git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
