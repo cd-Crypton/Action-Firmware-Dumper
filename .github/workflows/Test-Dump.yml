@@ -92,14 +92,8 @@ jobs:
 
     - name: Run - 2
       run: |
-        cd workspace && cd dumpyara2
-        python3 -m dumpyara ${GITHUB_WORKSPACE}/workspace/dumpyara/input/${{ github.event.inputs.FIRMWARE_NAME }}.zip
-      continue-on-error: true
-
-    - name: Run - 3
-      run: |
         cd workspace
-        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/dumpyara/working/${{ github.event.inputs.FIRMWARE_NAME }}
+        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/dumpyara/input/${{ github.event.inputs.FIRMWARE_NAME }}
 
     - name: Pushing to as Repository
       run: |
@@ -111,25 +105,7 @@ jobs:
         git config --global user.name "Carlo Dee"
         git config --global user.email "carlodee.official@gmail.com"
         git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
-        cd system && git add . && cd ..
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
-        cd vendor && git add . && cd ..
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
-        cd product && git add . && cd ..
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
-        cd system_ext && git add . && cd ..
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
-        cd odm && git add . && cd ..
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
-        cd boot && git add . && cd ..
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         git add .
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
