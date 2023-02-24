@@ -93,13 +93,13 @@ jobs:
     - name: Run - 2
       run: |
         cd workspace && cd dumpyara2
-        python3 -m ${GITHUB_WORKSPACE}/workspace/dumpyara/input/${{ github.event.inputs.FIRMWARE_NAME }}.zip
+        python3 -m dumpyara ${GITHUB_WORKSPACE}/workspace/dumpyara/input/${{ github.event.inputs.FIRMWARE_NAME }}.zip
       continue-on-error: true
 
     - name: Run - 3
       run: |
         cd workspace
-        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/${{ github.event.inputs.DEVICE_NAME }}
+        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/${{ github.event.inputs.FIRMWARE_NAME }}
 
     - name: Pushing to as Repository
       run: |
