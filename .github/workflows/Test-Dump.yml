@@ -56,44 +56,34 @@ jobs:
     - name: Check Out
       uses: actions/checkout@v3.1.0
 
-  #  - name: Cleanup
-   #   uses: rokibhasansagar/slimhub_actions@main
-
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
       with:
         swap-size-gb: 12
 
-    - name: Clone Extractor - 1
+    - name: Clone Dumper
       run: |
         mkdir workspace
         cd workspace
-        git clone https://github.com/AndroidDumps/dumpyara.git
-        cd dumpyara
+        git clone https://github.com/cd-Crypton/DumprX.git
+        cd DumprX
         sudo bash setup.sh
-
-    - name: Clone Extractor - 2
+          
+    - name: Run Dumper
       run: |
-        cd workspace
-        git clone https://github.com/sebaubuntu-python/dumpyara ./dumpyara2
-        cd dumpyara2 && pip3 install .
+        cd workspace && cd DumprX
+        ./dumper.sh ${{ github.event.inputs.FIRMWARE_URL }}
 
-    - name: Clone Extractor - 3
+    - name: Clone AOSP DT Gen
       run: |
         cd workspace
         git clone https://github.com/sebaubuntu-python/aospdtgen.git
         cd aospdtgen && pip3 install .
 
-    - name: Run - 1
-      run: |
-        cd workspace && cd dumpyara
-        ./dumpyara.sh ${{ github.event.inputs.FIRMWARE_URL }}
-      continue-on-error: true
-
-    - name: Run - 2
+    - name: Run AOSP DT Gen
       run: |
         cd workspace
-        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/dumpyara/working/${{ github.event.inputs.FIRMWARE_NAME }}
+        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/DumprX/out
 
     - name: Pushing to as Repository
       run: |
