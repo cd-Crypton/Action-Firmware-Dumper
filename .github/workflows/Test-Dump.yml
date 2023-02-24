@@ -1,4 +1,4 @@
-name: Android DumprX
+name: Android DumprX h
 
 on:
   workflow_dispatch:
@@ -99,7 +99,7 @@ jobs:
     - name: Run - 3
       run: |
         cd workspace
-        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/${{ github.event.inputs.FIRMWARE_NAME }}
+        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/dumpyara/working/${{ github.event.inputs.FIRMWARE_NAME }}
 
     - name: Pushing to as Repository
       run: |
