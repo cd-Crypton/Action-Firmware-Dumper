@@ -93,7 +93,7 @@ jobs:
     - name: Run - 2
       run: |
         cd workspace
-        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/dumpyara/input/${{ github.event.inputs.FIRMWARE_NAME }}
+        python3 -m aospdtgen -o lineageos ${GITHUB_WORKSPACE}/workspace/dumpyara/working/${{ github.event.inputs.FIRMWARE_NAME }}
 
     - name: Pushing to as Repository
       run: |
