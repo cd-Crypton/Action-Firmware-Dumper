@@ -59,19 +59,15 @@ jobs:
     - name: Cleanup
       uses: rokibhasansagar/slimhub_actions@main
 
-    - name: Set Swap Space
-      uses: pierotofy/set-swap-space@master
-      with:
-        swap-size-gb: 12
 
-    - name: Prepare the environment
-      run: |
-        sudo apt remove shim-signed grub-efi-amd64-bin --allow-remove-essential
-        sudo apt-get update
-        sudo apt -y upgrade
-        sudo apt-get -y install unace unrar zip unzip p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract rename
-        sudo apt-get -y install liblzma-dev python3-pip brotli lz4
-        pip install backports.lzma protobuf pycrypto twrpdtgen extract-dtb pycryptodome
+ #   - name: Prepare the environment
+ #     run: |
+ #       sudo apt remove shim-signed grub-efi-amd64-bin --allow-remove-essential
+  #      sudo apt-get update
+   #     sudo apt -y upgrade
+  #      sudo apt-get -y install unace unrar zip unzip p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract rename
+ #       sudo apt-get -y install liblzma-dev python3-pip brotli lz4
+  #      pip install backports.lzma protobuf pycrypto twrpdtgen extract-dtb pycryptodome
 
     - name: Clone Extractor
       run: |
