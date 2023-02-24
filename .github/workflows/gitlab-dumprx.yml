@@ -66,7 +66,8 @@ jobs:
 
     - name: Prepare the environment
       run: |
-        sudo apt update
+        sudo apt remove shim-signed grub-efi-amd64-bin --allow-remove-essential
+        sudo apt-get update
         sudo apt -y upgrade
         sudo apt-get -y install unace unrar zip unzip p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract rename
         sudo apt-get -y install liblzma-dev python3-pip brotli lz4
@@ -92,12 +93,20 @@ jobs:
         git init
         git config http.postBuffer 2097152000
         git config https.postBuffer 2097152000
-        git config --global http.version HTTP/1.1
         git config --global user.name "Carlo Dee"
         git config --global user.email "carlodee.official@gmail.com"
         git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
-        git add .
+        cd system && git add . && cd ..
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        cd vendor && git add . && cd ..
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        cd product && git add . && cd ..
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add .
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         echo "Done pushing as a repository. You now have Full Android Dump."
