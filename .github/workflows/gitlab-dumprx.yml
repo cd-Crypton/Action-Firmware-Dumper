@@ -93,7 +93,7 @@ jobs:
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         cd odm && git add . && cd ..
-        git push -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         cd vendor && git add . && cd ..
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
