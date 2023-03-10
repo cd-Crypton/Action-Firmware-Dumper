@@ -89,12 +89,12 @@ jobs:
         cd system && git add . && cd ..
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
-        cd system_ext && git add . && cd ..
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
-        cd odm && git add . && cd ..
-        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        cd system_ext && git add . && cd .. | exit 0
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}." | exit 0
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }} | exit 0
+        cd odm && git add . && cd .. | exit 0
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}." | exit 0
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }} | exit 0
         cd vendor && git add . && cd ..
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
