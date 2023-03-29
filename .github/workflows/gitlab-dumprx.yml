@@ -91,7 +91,7 @@ jobs:
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         cd system_ext && git add . && cd ..
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
-        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }} |
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         cd odm && git add . && cd ..
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
