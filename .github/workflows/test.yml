@@ -1,0 +1,113 @@
+name: Test Dump
+
+on:
+  workflow_dispatch:
+    inputs:
+      FIRMWARE_URL:
+        description: 'Firmware URL (Stock Firmware download link.)'
+        required: true
+        default: 'https://gauss-componentotacostmanual-sg.allawnofs.com/remove-e983cc1d18d5571510b70bcc9b66de70/component-ota/23/03/23/36eb6284e5b94b2098c40cdcf3201b02.zip'
+      DEVICE_NAME:
+        description: 'Device Codename (Codename, not the shipped device name.)'
+        required: true
+        default: 'golf'
+      VENDOR_NAME:
+        description: 'Vendor Name (Manufacturer or brands.)'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - xiaomi
+        - samsung
+        - realme
+        - oppo
+        - lenovo
+        - motorola
+        - asus
+        - acer
+        - zenphone
+        - itel
+        - tecno
+        - infinix
+        - unknown
+      FIRMWARE_NAME:
+        description: 'Firmware Name (Exact firmware name, the better.)'
+        required: true
+        default: 'F.03'
+      GITLAB_USERNAME:
+        description: 'It could be just your gitlab username or group name that your own.'
+        required: true
+        default: 'firmware-dump'
+
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Display Run Parameters
+      run: |
+        echo "::group::User Environment Variables"
+        echo "FIRMWARE_URL: ${{ github.event.inputs.FIRMWARE_URL }}"
+        echo "DEVICE_NAME: ${{ github.event.inputs.DEVICE_NAME }}"
+        echo "VENDOR_NAME: ${{ github.event.inputs.VENDOR_NAME }}"
+        echo "FIRMWARE_NAME: ${{ github.event.inputs.FIRMWARE_NAME }}"
+        echo "FIRMWARE_NAME: ${{ github.event.inputs.GITLAB_USERNAME }}"
+        echo "TARGET REPOSITORY: https://gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git"
+        echo "::endgroup::"
+ 
+    - name: Check Out
+      uses: actions/checkout@v3.1.0
+
+    - name: Cleanup
+      uses: rokibhasansagar/slimhub_actions@main
+
+
+    - name: Clone Extractor
+      run: |
+        mkdir workspace
+        cd workspace
+        git clone https://github.com/cd-Crypton/DumprX.git
+        cd DumprX
+        sudo bash setup.sh
+          
+    - name: Run
+      run: |
+        cd workspace && cd DumprX
+        ./dumper.sh ${{ github.event.inputs.FIRMWARE_URL }}
+
+    - name: Pushing to as Repository
+      run: |
+        cd workspace && cd DumprX/out
+        rm -rf .git
+        git init
+        git config http.postBuffer 2097152000
+        git config https.postBuffer 2097152000
+        git config --global user.name "Carlo Dee"
+        git config --global user.email "carlodee.official@gmail.com"
+        git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
+        git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
+        git add system
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add system_ext
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add vendor
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add odm
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add product
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add boot
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add *my_*
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add .
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        echo "Done pushing as a repository. You now have Full Android Dump."
