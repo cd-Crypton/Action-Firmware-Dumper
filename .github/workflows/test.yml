@@ -104,7 +104,28 @@ jobs:
         git add boot
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
-        git add *my_*
+        git add my_engineering
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add my_product
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add my_heytap
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add my_bigball
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add my_stock
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add my_manifest
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add my_carrier
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        git add my_region
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         git add .
