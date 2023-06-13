@@ -87,6 +87,7 @@ jobs:
         git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
         git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
         git add -A
+        git rm *.img
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
         git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         echo "Done pushing as a repository. You now have Full Android Dump."

@@ -54,6 +54,7 @@ jobs:
 
     - name: Run
       run: |
+        cd ${{ github.event.inputs.FIRMWARE_PATH }}
         bash extract-files.sh
 
     - name: Pushing to as Repository
