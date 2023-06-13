@@ -99,6 +99,7 @@ jobs:
 
     - name: Pushing to as Repository
       run: |
+        tree
         cd workspace/device/vendor$(echo ${{ github.event.inputs.FIRMWARE_PATH }} | sed 's/device//')
         git init
         git config http.postBuffer 2097152000
