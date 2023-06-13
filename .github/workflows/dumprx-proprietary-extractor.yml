@@ -49,6 +49,7 @@ jobs:
         git clone https://github.com/LineageOS/android_prebuilts_extract-tools -b lineage-18.1 android/prebuilts/extract-tools
         cd android
         git clone ${{ github.event.inputs.FIRMWARE_URL }} -b ${{ github.event.inputs.FIRMWARE_BRANCH }} ./firmware
+        mkdir -p ${{ github.event.inputs.FIRMWARE_PATH }}
         cp ./firmware/lineage-device-tree/ ${{ github.event.inputs.FIRMWARE_PATH }} -r
 
     - name: Run
