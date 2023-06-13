@@ -19,6 +19,18 @@ on:
         description: 'It could be just your gitlab username or group name that your own.'
         required: true
         default: 'proprietary_dump'
+      FIRMWARE_NAME:
+        description: 'Firmware Name (Exact firmware name, the better.)'
+        required: true
+        default: 'KE6-h6116'
+      HAS_ODM_INSIDE_VENDOR:
+        description: 'if you have odm inside of vendor partiton'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+        - false
+        - true
 
 jobs:
   build:
@@ -57,6 +69,9 @@ jobs:
     - name: Run
       run: |
         cd workspace/${{ github.event.inputs.FIRMWARE_PATH }}/lineage-device-tree
+        if [ ${{ github.event.inputs.FIRMWARE_PATH }} == "true" ]; then
+            cp ../../../../firmware/vendor/odm ../../../../firmware/
+        fi
         bash extract-files.sh ../../../../firmware/
 
     - name: Pushing to as Repository
@@ -67,9 +82,8 @@ jobs:
         git config https.postBuffer 2097152000
         git config --global user.name "Carlo Dee"
         git config --global user.email "carlodee.official@gmail.com"
-        git branch -M main
         git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
         git add -A
-        git commit -m "Initial commit"
-        git push -u origin main
+        git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
         echo "Done pushing as a repository. You now have vendor blobs."
