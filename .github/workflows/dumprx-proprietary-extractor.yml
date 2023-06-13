@@ -101,6 +101,7 @@ jobs:
       run: |
         tree
         cd workspace/device/vendor$(echo ${{ github.event.inputs.FIRMWARE_PATH }} | sed 's/device//')
+        cd ../TECNO-KE6
         git init
         git config http.postBuffer 2097152000
         git config https.postBuffer 2097152000
