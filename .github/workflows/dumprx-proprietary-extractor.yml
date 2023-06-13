@@ -45,12 +45,12 @@ jobs:
 
     - name: Clone Repo & Extractor
       run: |
-        mkdir android
-        cd android
+        mkdir workspace
+        cd workspace
         git clone ${{ github.event.inputs.FIRMWARE_URL }} -b ${{ github.event.inputs.FIRMWARE_BRANCH }} ./firmware
         mkdir -p ${{ github.event.inputs.FIRMWARE_PATH }}
         cp ./firmware/lineage-device-tree/ ./${{ github.event.inputs.FIRMWARE_PATH }} -r
-        cd ${{ github.event.inputs.FIRMWARE_PATH }}
+        cd ${{ github.event.inputs.FIRMWARE_PATH }}/lineage-device-tree
         cd ../..
         git clone https://github.com/LineageOS/android_tools_extract-utils -b lineage-18.1 android/tools/extract-utils
         git clone https://github.com/LineageOS/android_prebuilts_extract-tools -b lineage-18.1 android/prebuilts/extract-tools
