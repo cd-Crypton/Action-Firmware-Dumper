@@ -57,7 +57,7 @@ jobs:
     - name: Run
       run: |
         cd workspace/${{ github.event.inputs.FIRMWARE_PATH }}/lineage-device-tree
-        bash extract-files.sh ../../../../firmware/vendor
+        bash extract-files.sh ../../../../firmware/
 
     - name: Pushing to as Repository
       run: |
