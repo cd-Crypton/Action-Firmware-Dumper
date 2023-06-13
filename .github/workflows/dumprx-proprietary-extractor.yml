@@ -1,4 +1,4 @@
-name: Android DumprX
+name: Android Vendor blob
 
 on:
   workflow_dispatch:
