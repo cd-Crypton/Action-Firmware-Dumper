@@ -7,6 +7,29 @@ on:
         description: 'Firmware URL (dumprx)'
         required: true
         default: ''
+      DEVICE_NAME:
+        description: 'Device Codename (Codename, not the shipped device name.)'
+        required: true
+        default: 'CPH1723'
+      VENDOR_NAME:
+        description: 'Vendor Name (Manufacturer or brands.)'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - xiaomi
+        - samsung
+        - realme
+        - oppo
+        - lenovo
+        - motorola
+        - asus
+        - acer
+        - zenphone
+        - itel
+        - tecno
+        - infinix
+        - unknown
       FIRMWARE_BRANCH:
         description: 'Firmware branch name'
         required: true
