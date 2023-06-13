@@ -54,9 +54,7 @@ jobs:
 
     - name: Run
       run: |
-        cd android/
-        ls
-        tree
+        cd android/${{ github.event.inputs.FIRMWARE_PATH }}/lineage-device-tree
         bash extract-files.sh
 
     - name: Pushing to as Repository
