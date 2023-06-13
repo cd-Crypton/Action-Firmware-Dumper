@@ -1,0 +1,72 @@
+name: Android DumprX
+
+on:
+  workflow_dispatch:
+    inputs:
+      FIRMWARE_URL:
+        description: 'Firmware URL (dumprx)'
+        required: true
+        default: ''
+      FIRMWARE_BRANCH:
+	description: 'Firmware branch name'
+	required: true
+	default: ''
+      FIRMWARE_PATH:
+	description: 'Firmware Path'
+        required: true
+        default: 'device/tecno/KE6'
+      GITLAB_USERNAME:
+        description: 'It could be just your gitlab username or group name that your own.'
+        required: true
+        default: 'proprietary_dump'
+
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Display Run Parameters
+      run: |
+        echo "::group::User Environment Variables"
+        echo "FIRMWARE_URL: ${{ github.event.inputs.FIRMWARE_URL }}"
+        echo "DEVICE_NAME: ${{ github.event.inputs.DEVICE_NAME }}"
+        echo "VENDOR_NAME: ${{ github.event.inputs.VENDOR_NAME }}"
+        echo "FIRMWARE_NAME: ${{ github.event.inputs.FIRMWARE_NAME }}"
+        echo "FIRMWARE_NAME: ${{ github.event.inputs.GITLAB_USERNAME }}"
+        echo "TARGET REPOSITORY: https://gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git"
+        echo "::endgroup::"
+ 
+    - name: Check Out
+      uses: actions/checkout@v3.1.0
+
+    - name: Cleanup
+      uses: rokibhasansagar/slimhub_actions@main
+
+
+    - name: Clone Repo & Extractor
+      run: |
+	git clone https://github.com/LineageOS/android_tools_extract-utils -b lineage-18.1 android/tools/extract-utils
+	git clone https://github.com/LineageOS/android_prebuilts_extract-tools -b lineage-18.1 android/prebuilts/extract-tools
+	cd android
+	git clone ${{ github.event.inputs.FIRMWARE_URL }} -b ${{ github.event.inputs.FIRMWARE_BRANCH }} ./firmware
+
+	cp ./firmware/lineage-device-tree/ ${{ github.event.inputs.FIRMWARE_PATH }}
+
+    - name: Run
+      run: |
+	bash extract-files.sh
+
+    - name: Pushing to as Repository
+      run: |
+        cd ../vendor$(echo ${{ github.event.inputs.FIRMWARE_PATH }} | sed 's/device//')
+        git init
+        git config http.postBuffer 2097152000
+        git config https.postBuffer 2097152000
+        git config --global user.name "Carlo Dee"
+        git config --global user.email "carlodee.official@gmail.com"
+        git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
+        git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
+        git add -A
+        git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
+        git push -u origin ${{ github.event.inputs.FIRMWARE_NAME }}
+        echo "Done pushing as a repository. You now have vendor blobs."
