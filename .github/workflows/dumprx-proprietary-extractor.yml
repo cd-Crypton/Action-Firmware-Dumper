@@ -63,12 +63,11 @@ jobs:
       run: |
         cd workspace/device/vendor$(echo ${{ github.event.inputs.FIRMWARE_PATH }} | sed 's/device//')
         git init
-        git branch -m main
         git config http.postBuffer 2097152000
         git config https.postBuffer 2097152000
         git config --global user.name "Carlo Dee"
         git config --global user.email "carlodee.official@gmail.com"
-        git branch -M ${{ github.event.inputs.FIRMWARE_NAME }}
+        git branch -M main
         git remote add origin https://${{ secrets.gitlab_tokenName }}:${{ secrets.gitlab_userToken }}@gitlab.com/${{ github.event.inputs.GITLAB_USERNAME }}/android_dump_${{ github.event.inputs.VENDOR_NAME }}_${{ github.event.inputs.DEVICE_NAME }}.git
         git add -A
         git commit -m "Initial commit: Import from ${{ github.event.inputs.FIRMWARE_NAME }}."
