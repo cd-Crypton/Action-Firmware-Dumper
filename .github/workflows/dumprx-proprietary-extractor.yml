@@ -69,8 +69,8 @@ jobs:
     - name: Run
       run: |
         cd workspace/${{ github.event.inputs.FIRMWARE_PATH }}/lineage-device-tree
-        if [ ${{ github.event.inputs.FIRMWARE_PATH }} == "true" ]; then
-            cp ../../../../firmware/vendor/odm ../../../../firmware/
+        if [ ${{ github.event.inputs.FIRMWARE_PATH }} = "true" ]; then
+            cp ../../../../firmware/vendor/odm ../../../../firmware/ -r
         fi
         bash extract-files.sh ../../../../firmware/
 
