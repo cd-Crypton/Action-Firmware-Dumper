@@ -63,7 +63,7 @@ jobs:
       run: |
         cd workspace/device/vendor$(echo ${{ github.event.inputs.FIRMWARE_PATH }} | sed 's/device//')
         git init
-        git branch -m $DEVICE
+        git branch -m main
         git config http.postBuffer 2097152000
         git config https.postBuffer 2097152000
         git config --global user.name "Carlo Dee"
