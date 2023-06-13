@@ -50,7 +50,7 @@ jobs:
         cd android
         git clone ${{ github.event.inputs.FIRMWARE_URL }} -b ${{ github.event.inputs.FIRMWARE_BRANCH }} ./firmware
         mkdir -p ${{ github.event.inputs.FIRMWARE_PATH }}
-        cp ./firmware/lineage-device-tree/ ${{ github.event.inputs.FIRMWARE_PATH }} -r
+        cp ./firmware/lineage-device-tree/ ./${{ github.event.inputs.FIRMWARE_PATH }} -r
 
     - name: Run
       run: |
