@@ -54,6 +54,7 @@ jobs:
 
     - name: Run
       run: |
+        ls
         cd android/${{ github.event.inputs.FIRMWARE_PATH }}
         bash extract-files.sh
 
