@@ -54,8 +54,9 @@ jobs:
 
     - name: Run
       run: |
+        cd android/
         ls
-        cd android/${{ github.event.inputs.FIRMWARE_PATH }}
+        tree
         bash extract-files.sh
 
     - name: Pushing to as Repository
