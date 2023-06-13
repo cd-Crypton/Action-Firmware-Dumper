@@ -54,12 +54,12 @@ jobs:
 
     - name: Run
       run: |
-        cd ${{ github.event.inputs.FIRMWARE_PATH }}
+        cd android/${{ github.event.inputs.FIRMWARE_PATH }}
         bash extract-files.sh
 
     - name: Pushing to as Repository
       run: |
-        cd ../vendor$(echo ${{ github.event.inputs.FIRMWARE_PATH }} | sed 's/device//')
+        cd android/vendor$(echo ${{ github.event.inputs.FIRMWARE_PATH }} | sed 's/device//')
         git init
         git config http.postBuffer 2097152000
         git config https.postBuffer 2097152000
