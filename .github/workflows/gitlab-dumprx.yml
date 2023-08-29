@@ -37,12 +37,12 @@ jobs:
         echo "VENDOR_NAME=$(cat README.md | cut -d "-" -f 2 | grep -w "Codename" | head -n 1 | cut -d ":" -f 2 | cut -d " " -f 2)" >> $GITHUB_ENV
         echo "MANUFACTURER_NAME=$(cat README.md | cut -d "-" -f 2 | grep -w "Manufacturer" | head -n 1 | cut -d ":" -f 2 | cut -d " " -f 2)" >> $GITHUB_ENV
         echo "BRANCH=$(cat README.md | cut -d "-" -f 2 | grep -w "Id" | head -n 1 | cut -d ":" -f 2 | cut -d " " -f 2)" >> $GITHUB_ENV
-        echo "DUMP_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)" >> $GITHUB_ENV
-
+        
     - name: Push as Repository
       run: |
         cd workspace/dumprx/out
         rm -rf .git
+        DUMP_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)
         git init
         git config --global user.name "Carlo Dandan"
         git config --global user.email "carlodandan.personal@proton.me"
