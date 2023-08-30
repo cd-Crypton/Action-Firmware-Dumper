@@ -29,7 +29,7 @@ jobs:
       run: |
         cd workspace/dumprx
         bash dumper.sh ${{ github.event.inputs.FIRMWARE_LINK }}
-
+    
     - name: Set Variables
       run: |
         cd workspace/dumprx/out
@@ -38,6 +38,12 @@ jobs:
         echo "MANUFACTURER_NAME=$(cat README.md | cut -d "-" -f 2 | grep -w "Manufacturer" | head -n 1 | cut -d ":" -f 2 | cut -d " " -f 2)" >> $GITHUB_ENV
         echo "BRANCH=$(cat README.md | cut -d "-" -f 2 | grep -w "Id" | head -n 1 | cut -d ":" -f 2 | cut -d " " -f 2)" >> $GITHUB_ENV
         
+    - name: Create Gitlab Repository
+      run: |
+        cd workspace
+        curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_TOKEN }}" -X POST "https://gitlab.com/api/v4/projects?name=android_dump_${{ env.MANUFACTURER_NAME }}_${{ env.VENDOR_NAME }}&visibility=public" > repo.json
+        echo "USERNAME=$(cat repo.json | grep -o '"username":"[^"]*' | cut -d'"' -f4)" >> $GITHUB_ENV
+
     - name: Push as Repository
       run: |
         cd workspace/dumprx/out
@@ -46,7 +52,7 @@ jobs:
         git init
         git config --global user.name "Carlo Dandan"
         git config --global user.email "carlodandan.personal@proton.me"
-        for dir in ${{ env.DUMP_DIR_LIST }}; do
+        for dir in ${DUMP_DIR_LIST}; do
             git add ${dir}
             git commit -s -m "dump: ${dir}: import dump for ${VENDOR_NAME}
             Firmware: ${{ github.event.inputs.FIRMWARE_LINK }}"
@@ -54,7 +60,6 @@ jobs:
         git add .
         git commit -s -m "dump: import remaining dump for ${VENDOR_NAME}
         Firmware: ${{ github.event.inputs.FIRMWARE_LINK }}"
-        git remote add origin https://${{ secrets.GITLAB_TOKEN_NAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.com/android_dump_${{ env.MANUFACTURER_NAME }}_${{ env.VENDOR_NAME }}.git
-        curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_TOKEN }}" -X POST "https://gitlab.com/api/v4/projects?name=android_dump_${{ env.MANUFACTURER_NAME }}_${{ env.VENDOR_NAME }}&visibility=public"
+        git remote add origin https://${{ secrets.GITLAB_TOKEN_NAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.com/${{ env.USERNAME}/android_dump_${{ env.MANUFACTURER_NAME }}_${{ env.VENDOR_NAME }}.git
         git branch -M ${{ env.BRANCH }}
         git push -u origin ${{ env.BRANCH }}
