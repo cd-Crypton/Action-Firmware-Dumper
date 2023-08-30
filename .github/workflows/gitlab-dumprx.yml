@@ -60,6 +60,6 @@ jobs:
         git add .
         git commit -s -m "dump: import remaining dump for ${VENDOR_NAME}
         Firmware: ${{ github.event.inputs.FIRMWARE_LINK }}"
-        git remote add origin https://${{ secrets.GITLAB_TOKEN_NAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.com/${{ env.USERNAME}/android_dump_${{ env.MANUFACTURER_NAME }}_${{ env.VENDOR_NAME }}.git
+        git remote add origin https://${{ secrets.GITLAB_TOKEN_NAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.com/${{ env.USERNAME }}/android_dump_${{ env.MANUFACTURER_NAME }}_${{ env.VENDOR_NAME }}.git
         git branch -M ${{ env.BRANCH }}
         git push -u origin ${{ env.BRANCH }}
