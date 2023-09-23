@@ -10,12 +10,12 @@ Firmware Dumper using DumprX Source Code Script. This workflows will let you dum
 * Then go to Secrets and Variables, and tap Action in dropdown choices.
 * Tap New Repository Secrets;
    * Add this:
-      * `gitlab_tokenName`
+      * `GITLAB_TOKEN_NAME`
       * `<paste here your token name>`
    * Then tap Add Secrets.
 * Tap New Repository Secrets, again;
    * Add this:
-      * `gitlab_userToken`
+      * `GITLAB_TOKEN`
       * `<paste here your access token>`
    * Then tap Add Secrets.
 
