@@ -56,6 +56,8 @@ jobs:
       run: |
         cd workspace/dumprx/out
         rm -rf .git
+        rm -rf lineage-device-tree
+        rm -rf twrp-device-tree
         DUMP_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)
         git init
         git branch -M ${{ env.BRANCH }}
