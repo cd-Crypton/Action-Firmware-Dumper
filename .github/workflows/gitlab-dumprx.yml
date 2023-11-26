@@ -37,15 +37,33 @@ jobs:
       run: |
         cd workspace/dumprx
         bash dumper.sh ${{ github.event.inputs.FIRMWARE_LINK }}
-    
-    - name: Set Variables
+        cd out
+        echo "MANUFACTURER_NAME=$(grep "ro.product.vendor.manufacturer" vendor/build.prop | awk -F "=" '{print $2}')" >> $GITHUB_ENV
+
+    - name: Set Variables - if oplus
+      if: env.MANUFACTURER_NAME == 'oplus'
       run: |
         cd workspace/dumprx/out
         rm -rf .git
-        echo "VENDOR_NAME=$(cat README.md | cut -d "-" -f 2 | grep -w "Codename" | head -n 1 | cut -d ":" -f 2 | cut -d " " -f 2)" >> $GITHUB_ENV
-        echo "MANUFACTURER_NAME=$(cat README.md | cut -d "-" -f 2 | grep -w "Manufacturer" | head -n 1 | cut -d ":" -f 2 | cut -d " " -f 2)" >> $GITHUB_ENV
-        echo "BRANCH=$(cat README.md | cut -d "-" -f 2 | grep -w "Id" | head -n 1 | cut -d ":" -f 2 | cut -d " " -f 2)" >> $GITHUB_ENV
-        
+        if [ -d odm ]; then
+           echo "ODM directory exist..."
+        else
+           echo "Making fake ODM directory..."
+           mkdir -p odm && cd odm
+           echo "ro.vendor.oplus.market.name=ossi-${{ github.run_id }}" > build.prop
+           cd ..
+        fi
+        echo "VENDOR_NAME=$(grep "ro.vendor.oplus.market.name" odm/build.prop | awk -F "=" '{print $2}')" >> $GITHUB_ENV
+        echo "BRANCH=$(grep "ro.vendor.build.id" vendor/build.prop | awk -F "=" '{print $2}')" >> $GITHUB_ENV
+
+    - name: Set Variables - if others
+      if: env.MANUFACTURER_NAME != 'oplus'
+      run: |
+        cd workspace/dumprx/out
+        rm -rf .git
+        echo "VENDOR_NAME=$(grep "ro.product.vendor.device" vendor/build.prop | awk -F "=" '{print $2}')" >> $GITHUB_ENV
+        echo "BRANCH=$(grep "ro.vendor.build.id" vendor/build.prop | awk -F "=" '{print $2}')" >> $GITHUB_ENV
+
     - name: Create Gitlab Repository
       run: |
         cd workspace
