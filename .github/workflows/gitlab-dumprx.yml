@@ -69,6 +69,7 @@ jobs:
         cd workspace
         curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_TOKEN }}" -X POST "https://gitlab.com/api/v4/projects?name=android_dump_${{ env.MANUFACTURER_NAME }}_${{ env.VENDOR_NAME }}&visibility=public" > repo.json
         echo "USERNAME=$(cat repo.json | grep -o '"username":"[^"]*' | cut -d'"' -f4)" >> $GITHUB_ENV
+        cat repo.json
 
     - name: Push as Repository
       run: |
