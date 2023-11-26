@@ -56,10 +56,9 @@ jobs:
       run: |
         cd workspace/dumprx/out
         rm -rf .git
-        rm -rf lineage-device-tree
-        rm -rf twrp-device-tree
         DUMP_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)
         git init
+        find . -size +97M -printf '%P\n' -o -name "*sensetime*" -printf '%P\n' -o -name "*.lic" -printf '%P\n' >| .gitignore
         git branch -M ${{ env.BRANCH }}
         git config --global user.name "Carlo Dandan"
         git config --global user.email "carlodandan.personal@proton.me"
