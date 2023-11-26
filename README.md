@@ -1,6 +1,6 @@
 ## Action Firmware Dumper
 
-Firmware Dumper using DumprX Source Code Script. This workflows will let you dump in your own GitLab Account/Organization. It is a bit slower compare to other CI/CD, but it works as fine.
+Firmware Dumper using DumprX Source Code Script. This workflows will let you dump in your own GitLab Account/Organization.
 
 ## Pre-requisites
 
@@ -20,7 +20,6 @@ Firmware Dumper using DumprX Source Code Script. This workflows will let you dum
    * Then tap Add Secrets.
 
 ## Notes
-* Most OPlus-related stock firmware (Realme, for example) doesn't work using because of it not being able to get the build.prop, hence failing.
-* Reason is, most of it has split super inside, therefore super.img cannot be extracted, hence no build properties from system, vendor nor product.
-* Unless its an OTA firmware, it might work, as most OTA uses payload.bin now, and super image inside wasn't split in multiple files.
-
+* Firmware that has split super image as part of ota/payload won't work.
+* Blobs/files that size is over 100MB won't work, GitLab has limit per file size.
+* Most oplus devices uses generic name "ossi" in build.prop of system, vendor and even in product partition, only odm partition has the right device model/name. If device dump end up having ossi name, don't get confused whether you made a wrong dump or not.
