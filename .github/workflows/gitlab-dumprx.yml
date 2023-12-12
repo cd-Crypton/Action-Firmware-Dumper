@@ -38,7 +38,7 @@ jobs:
         cd workspace/dumprx
         bash dumper.sh ${{ github.event.inputs.FIRMWARE_LINK }}
         cd out
-        echo "MANUFACTURER_NAME=$(grep "ro.product.vendor.manufacturer" vendor/build.prop | awk -F "=" '{print $2}')" >> $GITHUB_ENV
+        echo "MANUFACTURER_NAME=$(grep "ro.product.vendor.manufacturer" vendor/build.prop | awk -F "=" '{print $2}' | awk '{print $1}')" >> $GITHUB_ENV
 
     - name: Set Variables - if oplus
       if: env.MANUFACTURER_NAME == 'oplus'
