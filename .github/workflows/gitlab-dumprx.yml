@@ -79,6 +79,7 @@ jobs:
         rm -rf .gitattributes
         DUMP_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)
         git init
+        git lfs install
         find . \( -name "*sensetime*" -o -name "*.lic" \) | cut -d'/' -f'2-' >| .gitignore
         git branch -M ${{ env.BRANCH }}
         git config --global user.name "Carlo Dandan"
