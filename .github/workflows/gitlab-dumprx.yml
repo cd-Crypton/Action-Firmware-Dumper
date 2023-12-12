@@ -75,13 +75,19 @@ jobs:
       run: |
         cd workspace/dumprx/out
         rm -rf .git
+        rm -rf .gitignore
+        rm -rf .gitattributes
         DUMP_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)
         git init
-        find . -size +97M -printf '%P\n' -o -name "*sensetime*" -printf '%P\n' -o -name "*.lic" -printf '%P\n' >| .gitignore
+        find . \( -name "*sensetime*" -o -name "*.lic" \) | cut -d'/' -f'2-' >| .gitignore
         git branch -M ${{ env.BRANCH }}
         git config --global user.name "Carlo Dandan"
         git config --global user.email "carlodandan.personal@proton.me"
         git remote add origin https://${{ secrets.GITLAB_TOKEN_NAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.com/${{ env.USERNAME }}/android_dump_${{ env.MANUFACTURER_NAME }}_${{ env.VENDOR_NAME }}.git
+        find . -type f -size +100M -exec git lfs track {} \;
+        git add .gitattributes
+    		git commit -s -m "Setup Git LFS"
+    		git push -u origin ${{ env.BRANCH }}
         for dir in ${DUMP_DIR_LIST}; do
             git add ${dir}
             git commit -s -m "dump: ${dir}: import dump for ${VENDOR_NAME}
