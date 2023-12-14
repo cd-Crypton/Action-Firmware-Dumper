@@ -22,4 +22,5 @@ Firmware Dumper using DumprX Source Code Script. This workflows will let you dum
 ## Notes
 * Firmware that has split super image as part of ota/payload won't work.
 * Blobs/files that size is over 100MB won't work, GitLab has limit per file size.
+* If the file size is over 100MB, action will track it as GIT-LFS.
 * Most oplus devices uses generic name "ossi" in build.prop of system, vendor and even in product partition, only odm partition has the right device model/name. If device dump end up having ossi name, don't get confused whether you made a wrong dump or not.
