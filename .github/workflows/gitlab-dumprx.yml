@@ -77,7 +77,7 @@ jobs:
         rm -rf .git
         rm -rf .gitignore
         rm -rf .gitattributes
-        DUMP_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)
+        DUMP_DIR_LIST=$(find -type d -not -empty -printf "%P\n" | grep -v / | grep -v .git)
         git init
         git lfs install
         find . \( -name "*sensetime*" -o -name "*.lic" \) | cut -d'/' -f'2-' >| .gitignore
