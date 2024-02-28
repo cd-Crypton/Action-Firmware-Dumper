@@ -38,7 +38,7 @@ jobs:
         cd workspace/dumprx
         bash dumper.sh ${{ github.event.inputs.FIRMWARE_LINK }}
         cd out
-        echo "MANUFACTURER_NAME=$(grep "ro.product.vendor.manufacturer" vendor/build.prop | awk -F "=" 'NR==2 {split($2, words, " "); print words[1]}')" >> $GITHUB_ENV
+        echo "MANUFACTURER_NAME=$(grep "ro.product.vendor.manufacturer" vendor/build.prop | awk -F "=" '{split($2, words, " "); print words[1]; exit}')" >> $GITHUB_ENV
 
     - name: Set Variables - if oplus
       if: env.MANUFACTURER_NAME == 'oplus'
@@ -53,16 +53,16 @@ jobs:
            echo "ro.vendor.oplus.market.name=ossi-${{ github.run_id }}" > build.prop
            cd ..
         fi
-        echo "VENDOR_NAME=$(grep "ro.vendor.oplus.market.name" odm/build.prop | awk -F "=" 'NR==2 {split($2, words, " "); print words[1]}')" >> $GITHUB_ENV
-        echo "BRANCH=$(grep "ro.vendor.build.id" vendor/build.prop | awk -F "=" 'NR==2 {split($2, words, " "); print words[1]}')" >> $GITHUB_ENV
+        echo "VENDOR_NAME=$(grep "ro.vendor.oplus.market.name" odm/build.prop | awk -F "=" '{split($2, words, " "); print words[1]; exit}')" >> $GITHUB_ENV
+        echo "BRANCH=$(grep "ro.vendor.build.id" vendor/build.prop | awk -F "=" '{split($2, words, " "); print words[1]; exit}')" >> $GITHUB_ENV
 
     - name: Set Variables - if others
       if: env.MANUFACTURER_NAME != 'oplus'
       run: |
         cd workspace/dumprx/out
         rm -rf .git
-        echo "VENDOR_NAME=$(grep "ro.product.vendor.device" vendor/build.prop | awk -F "=" 'NR==2 {split($2, words, " "); print words[1]}')" >> $GITHUB_ENV
-        echo "BRANCH=$(grep "ro.vendor.build.id" vendor/build.prop | awk -F "=" 'NR==2 {split($2, words, " "); print words[1]}')" >> $GITHUB_ENV
+        echo "VENDOR_NAME=$(grep "ro.product.vendor.device" vendor/build.prop | awk -F "=" '{split($2, words, " "); print words[1]; exit}')" >> $GITHUB_ENV
+        echo "BRANCH=$(grep "ro.vendor.build.id" vendor/build.prop | awk -F "=" '{split($2, words, " "); print words[1]; exit}')" >> $GITHUB_ENV
 
     - name: Create Gitlab Repository
       run: |
